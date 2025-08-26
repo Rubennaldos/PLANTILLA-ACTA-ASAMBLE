@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sistema de Actas – Junta de Propietarios San Antonio de Pachacámac</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-header no-print">
+    <h1>Actas de Junta Directiva</h1>
+    <div class="sub">Asamblea / Reunión interna · RTDB</div>
+  </header>
+
+  <main class="layout">
+    <!-- PANEL IZQUIERDO -->
+    <section class="panel no-print">
+      <h2>Datos de la reunión</h2>
+
+      <div class="row-3">
+        <div>
+          <label class="lab" for="asociacion">Nombre de la Asociación</label>
+          <div class="lock-row">
+            <input id="asociacion" type="text" value="Asociación Junta de Propietarios San Antonio de Pachacámac" disabled />
+            <button id="toggleLockAsoc" class="mini-lock" title="Desbloquear/editar">🔒</button>
+          </div>
+        </div>
+
+        <div>
+          <label class="lab" for="claseReunion">Clase de reunión</label>
+          <select id="claseReunion">
+            <option value="asamblea" selected>Asamblea de propietarios</option>
+            <option value="interna">Reunión interna de Junta Directiva</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="lab" for="tipo">Tipo de reunión</label>
+          <select id="tipo">
+            <option value="EXTRAORDINARIA" selected>Extraordinaria</option>
+            <option value="ORDINARIA">Ordinaria</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row-3">
+        <div>
+          <label class="lab" for="ciudad">Ciudad</label>
+          <div class="lock-row">
+            <input id="ciudad" type="text" value="Lima" disabled />
+            <button id="toggleLockCiudad" class="mini-lock" title="Desbloquear/editar">🔒</button>
+          </div>
+        </div>
+        <div>
+          <label class="lab" for="distrito">Distrito</label>
+          <div class="lock-row">
+            <input id="distrito" type="text" value="Pachacámac" disabled />
+            <button id="toggleLockDistrito" class="mini-lock" title="Desbloquear/editar">🔒</button>
+          </div>
+        </div>
+        <div>
+          <label class="lab" for="departamento">Departamento</label>
+          <div class="lock-row">
+            <input id="departamento" type="text" value="Lima" disabled />
+            <button id="toggleLockDepto" class="mini-lock" title="Desbloquear/editar">🔒</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label class="lab" for="lugar">Lugar de la reunión</label>
+          <input id="lugar" type="text" placeholder="Ej: LOSA DE LA QUINTA LLANA" />
+        </div>
+        <div>
+          <label class="lab" for="fecha">Fecha</label>
+          <input id="fecha" type="date" />
+        </div>
+      </div>
+
+      <div class="row" id="rowConv">
+        <div>
+          <label class="lab" for="hora">Hora de inicio</label>
+          <input id="hora" type="time" />
+        </div>
+        <div>
+          <label class="lab" for="convocatoria">Convocatoria en que inició</label>
+          <select id="convocatoria">
+            <option value="">— Seleccionar —</option>
+            <option value="Primera">Primera</option>
+            <option value="Segunda">Segunda</option>
+          </select>
+        </div>
+        <div>
+          <label class="lab" for="numeroActa">N.º de Acta</label>
+          <input id="numeroActa" type="text" placeholder="Se valida que sea único" />
+        </div>
+      </div>
+
+      <h2 style="margin-top:18px">Asistentes / Dirigentes</h2>
+      <div class="row">
+        <div>
+          <label class="lab">Buscar dirigente</label>
+          <input id="buscarDir" type="text" placeholder="Escribe nombre o cargo…" />
+        </div>
+        <div class="grow"></div>
+        <div>
+          <label class="lab">&nbsp;</label>
+          <button id="btnNuevoDir" class="btn">+ Añadir Dirigente</button>
+        </div>
+      </div>
+
+      <div id="listaDirigentes" class="chips"></div>
+
+      <div class="row" style="margin-top:10px">
+        <div>
+          <label class="lab" for="presidente">Presidente</label>
+          <select id="presidente"><option value="">— Seleccionar —</option></select>
+        </div>
+        <div>
+          <label class="lab" for="secretario">Secretario(a)</label>
+          <select id="secretario"><option value="">— Seleccionar —</option></select>
+        </div>
+      </div>
+
+      <h2 style="margin-top:18px">Órdenes del día</h2>
+      <div class="btn-row">
+        <button id="btnAddPunto" class="btn">+ Añadir orden</button>
+        <button id="btnClearPuntos" class="btn outline">Limpiar órdenes</button>
+      </div>
+      <div id="puntosWrap" class="puntos"></div>
+
+      <div class="sep"></div>
+      <div class="btn-row">
+        <button id="btnGenerar" class="btn primary">Generar Acta (auto-guardar)</button>
+        <button id="btnGuardarNuevo" class="btn">Guardar como nueva</button>
+        <button id="btnGuardarCambios" class="btn outline" disabled>Guardar cambios</button>
+        <button id="btnReset" class="btn outline">Reiniciar</button>
+        <button id="btnPrint" class="btn success">Imprimir</button>
+      </div>
+
+      <h2 style="margin-top:22px">Historial de actas</h2>
+      <ul id="historialActas" class="historial"></ul>
+    </section>
+
+    <!-- PANEL DERECHO / PREVIEW -->
+    <section class="panel preview-panel">
+      <div id="preview" class="preview">
+        <h1>ACTA DE REUNIÓN DE LA JUNTA DIRECTIVA</h1>
+        <p class="muted">Completa el formulario y pulsa <strong>“Generar Acta”</strong> para ver aquí la versión final.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL DIRIGENTE -->
+  <div id="modalBack" class="modal-back no-print">
+    <div class="modal">
+      <div class="modal-h">
+        <h3 id="mdlTitle">Añadir nuevo dirigente</h3>
+        <button id="closeModal" class="icon">✖</button>
+      </div>
+      <div class="modal-b">
+        <label class="lab">Nombre y apellidos</label>
+        <input id="ndNombre" type="text" />
+        <div class="row">
+          <div>
+            <label class="lab">DNI</label>
+            <input id="ndDni" type="text" />
+          </div>
+          <div>
+            <label class="lab">Cargo / Secretaría</label>
+            <input id="ndCargo" type="text" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-f">
+        <button id="btnGuardarDir" class="btn primary">Guardar dirigente</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- App -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>
